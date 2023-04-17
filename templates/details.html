@@ -1,0 +1,108 @@
+{% extends "base.html" %}
+{% block title %}Details{% endblock %}
+{% block head %}
+    {{ super() }}
+    <style>
+      body {
+          min-height: 75rem;
+          padding-top: 4.5rem;
+      }
+  </style>
+{% endblock %}
+{% block content %}
+  <h1>{{ master.name }}</h1> 
+  <div class="row">
+      <div class="col-md-2 fw-bold">Street address:</div>
+      <div class="col">{{ master.street_address }}</div>
+  </div>
+  <div class="row">
+      <div class="col-md-2 fw-bold">Description:</div>
+      <div class="col">{{ master.description }}</div>                
+  </div>
+
+
+  <h4 class="mt-5">People</h4>
+
+  <p>
+      <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#addReviewModal">
+          Add new detail
+      </button>
+  </p>
+
+<!-- Button trigger modal -->
+    {% if detail_rows %}
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Phone</th>
+                    <th>e-mail</th>
+                    <th>Street Address</th>
+					<th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for row in detail_rows %}
+                    <tr>
+                        <td>{{ row.name }}</td>
+                        <td>{{ row.phone }}</td>
+                        <td>{{ row.email }}</td>
+                        <td>{{ row.street_address }}</td>
+				<td>
+				<a  class="btn btn-success px-4 gap-3" target="_self" href="{{ url_for( 'edit_details' , id=row.id ) }}">Edit</a>
+				<a  class="btn btn-success px-4 gap-3" target="_self" href="{{ url_for( 'delete_details' , id=row.id ) }}">Delete</a>
+				</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <p>No details of this master yet.</p>
+    {% endif %}
+
+    <!-- Modal -->
+    <div class="modal fade" id="addReviewModal" tabindex="-1" aria-labelledby="addReviewModalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="addReviewModalLabel">Add Detail</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+              <form method="POST" action="{{ url_for('add_details', id=master.id) }}">
+
+              <div class="modal-body">
+
+                <div class="mb-3">                        
+                    <label for="name" class="form-label fw-bold">Name</label>
+                    <input type="text" class="form-control" id="name" name="name">
+                  </div>
+				  				  
+                  <div class="mb-3">
+                      <label for="phone" class="form-label fw-bold">Phone</label>
+                      <input type="text" class="form-control" id="phone" name="phone">
+                  </div>
+				  <div class="mb-3">
+                      <label for="email" class="form-label fw-bold">e-mail</label>
+                      <input type="text" class="form-control" id="email" name="email">
+                  </div>
+				  
+				  <div class="mb-3">
+                      <label for="street_address" class="form-label fw-bold">Street address</label>
+                      <input type="text" class="form-control" id="street_address" name="street_address">
+                  </div>
+				  
+				  
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="submit" class="btn btn-primary">Save changes</button>
+              </div>
+        </form>
+        </div>
+      </div>
+    </div>
+
+
+   
+
+{% endblock %}

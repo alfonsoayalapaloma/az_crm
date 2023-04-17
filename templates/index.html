@@ -1,0 +1,101 @@
+{% extends "base.html" %}
+{% block title %}Master List{% endblock %}
+{% block head %}
+    {{ super() }}
+    <style>
+      body {
+          min-height: 75rem;
+          padding-top: 4.5rem;
+      }
+
+      .score {
+        display: block;
+        font-size: 16px;
+        position: relative;
+        overflow: hidden;
+      }
+      
+      .score-wrap {
+        display: inline-block;
+        position: relative;
+        height: 19px;
+      }
+      
+      .score .stars-active {
+        color: #EEBD01;
+        position: relative;
+        z-index: 10;
+        display: inline-block;
+        overflow: hidden;
+        white-space: nowrap;
+      }
+      
+      .score .stars-inactive {
+        color: grey;
+        position: absolute;
+        top: 0;
+        left: 0;
+        -webkit-text-stroke: initial;
+        /* overflow: hidden; */
+      }
+  </style>
+{% endblock %}
+{% block content %}
+      <h1>Master Records</h1>
+
+      {% if True %}
+          <table class="table">
+              <thead>
+                  <tr>
+                      <th>Company</th>
+                      <th>Description</th>
+                      <th class="text-end">Details</th>
+                  </tr>
+              </thead>
+              <tbody>
+                  {% for row in records %}
+                      <tr>
+                          <td>{{ row }}</td>
+                          <td>{{ row.description	 }}</td>
+                          <td class="text-end">
+						  <a href="{{ url_for('details', id=row.id) }}" class="btn btn-sm btn-primary">Details</a></td>
+                      </tr>
+                  {% endfor %}
+              </tbody>
+          </table>
+      {% else %}
+          <p>No master records exist.  Select Add new master to add one.</p>
+      {% endif %}
+	
+      <div class="d-flex justify-content-end">
+              <a href="{{ url_for('create_master') }}" class="btn btn-success px-4 gap-3">Add</a>		  			   
+      </div>	  
+
+ <!-- Modal -->
+    <div class="modal fade" id="uploadFileModal" tabindex="-1" aria-labelledby="uploadFileModalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="uploadFileModalLabel">Upload</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+              <form method="POST" enctype="multipart/form-data" action="{{ url_for('upload_file') }}">
+
+              <div class="modal-body">
+                
+				<input type=file name=file>
+				
+                    
+              </div>
+              <div class="modal-footer">
+			  
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="submit" class="btn btn-primary">Upload</button>
+              </div>
+        </form>
+        </div>
+      </div>
+    </div>
+
+{% endblock %}
+
